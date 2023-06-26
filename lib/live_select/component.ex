@@ -129,7 +129,10 @@ defmodule LiveSelect.Component do
       |> assign(:text_input_field, String.to_atom("#{socket.assigns.field.field}_text_input"))
       |> assign_new(:selection, fn
         %{field: field, options: options, mode: mode} ->
-          set_selection(field.value, options, mode)
+          case Map.has_key?(assigns, :value) do
+            true -> set_selection(assigns.value, options, mode)
+            false -> set_selection(field.value, options, mode)
+          end
       end)
 
     socket =
